@@ -1,5 +1,6 @@
-35bb41609a229b394175773fcb676ec6  ./META-INF/com/google/android/update-binary
-725f96cd0e49132223ae8e42bdba7456  ./META-INF/com/google/android/updater-script
 d41d8cd98f00b204e9800998ecf8427e  ./boot.img
 c72c06d5ff98f6b5f7dab0e41a430f69  ./md5sums.sh
 d41d8cd98f00b204e9800998ecf8427e  ./system.tar.bz2
+3c9aadf4119bc19f36cb9d84aac430ee  ./META-INF/com/google/android/update-binary
+725f96cd0e49132223ae8e42bdba7456  ./META-INF/com/google/android/updater-script
+0fb2725c0c22d35291b61e2c23ba2ecc  ./README
