@@ -14,9 +14,13 @@ ui_print() {
   sleep 0.35
 }
 
+is_directory() {
+	[ -d $1 ]
+}
+
 is_mounted() {
 	awk -F'[ \t]+' \
-	-v "path=$1" '\
+	-v path=$1 '\
 	BEGIN {
 		found = 0
 	} {
@@ -31,7 +35,7 @@ is_mounted() {
 		}
 		exit(1)
 	}
-	' "/proc/$$/mounts"
+	' /proc/$$/mounts
 }
 
 if is_mounted /cache; then
@@ -40,7 +44,7 @@ fi
 
 
 ui_print "*************************"
-ui_print "* KustROM Installer"
+ui_print "*   KustROM Installer"
 ui_print "*************************"
 
 
@@ -85,6 +89,9 @@ ui_print "- Done."
 
 ui_print "- Removing pre-install apps..."
 if ! is_mounted /custom; then
+	if ! is_directory /custom; then
+		mkdir -p /custom
+	fi
 	mount /dev/block/bootdevice/by-name/custom /custom	
 fi
 rm -rf /custom/3rd-party/apk/*
