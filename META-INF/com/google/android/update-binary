@@ -1,0 +1,114 @@
+#!/sbin/sh
+#
+# KustROM Installer script
+# Copyright (c) 2017-2020 - urain39
+#
+
+OUTFD=$2
+ZIP=$3
+TMPDIR=/tmp/KustROM
+
+ui_print() {
+  echo -e "ui_print $1" >> /proc/self/fd/$OUTFD
+  echo -e "ui_print" >> /proc/self/fd/$OUTFD
+  sleep 0.35
+}
+
+is_mounted() {
+	awk -F'[ \t]+' \
+	-v "path=$1" '\
+	BEGIN {
+		found = 0
+	} {
+		gsub(/\\040/, " ", $2)
+		if ($2 == path) {
+			found = 1
+			exit(0)
+		}
+	} END {
+		if (found) {
+			exit(0)
+		}
+		exit(1)
+	}
+	' "/proc/$$/mounts"
+}
+
+if is_mounted /cache; then
+	exec > /cache/kustom.log 2> /cache/kustom.err
+fi
+
+
+ui_print "*************************"
+ui_print "* KustROM Installer"
+ui_print "*************************"
+
+
+ui_print "- Mounting system..."
+if is_mounted /system; then
+	mount -o rw,remount /system
+else
+	mount /system
+fi
+ui_print "- Done."
+
+
+ui_print "- Reallocating tmp size..."
+mount -o remount,size=85% tmpfs -t tmpfs /tmp || exit 22
+ui_print "- Done."
+
+
+ui_print "- Extracting backup files..."
+mkdir -p $TMPDIR && cd $TMPDIR && unzip $ZIP || exit 22
+ui_print "- Done."
+
+
+ui_print "- Checking backup files..."
+cd $TMPDIR && md5sum -c md5sums.txt || exit 22
+ui_print "- Done."
+
+
+ui_print "- Cleaning system..."
+cd / && rm -r /system/* || exit 22
+ui_print "- Done."
+
+
+ui_print "- Restoring boot..."
+cd $TMPDIR && dd if=boot.img of=/dev/block/bootdevice/by-name/boot bs=$((8*1024*1024)) || exit 22
+ui_print "- Done."
+
+
+ui_print "- Restoring system..."
+cd / && tar xjvpf $TMPDIR/system.tar.bz2 || exit 22
+ui_print "- Done."
+
+
+ui_print "- Removing pre-install apps..."
+if ! is_mounted /custom; then
+	mount /dev/block/bootdevice/by-name/custom /custom	
+fi
+rm -rf /custom/3rd-party/apk/*
+ui_print "- Done."
+
+
+ui_print "- Fixing system files time..."
+cd /system && find . -type f | while read -r f; do
+	touch -r /system/lib/libc.so $f
+done
+ui_print "- Done."
+
+
+ui_print "- Fixing system directories time..."
+cd /system && find . -type d | while read -r d; do
+	touch -r /system/lib/libc.so $d
+done
+ui_print "- Done."
+
+
+ui_print "- Cleaning up..."
+cd / && umount /system && rm -r $TMPDIR
+ui_print "- Done."
+
+
+ui_print "*************************"
+ui_print " All Done. Enjoy it! ; )"
