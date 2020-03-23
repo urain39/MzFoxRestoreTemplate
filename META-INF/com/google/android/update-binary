@@ -9,8 +9,8 @@ ZIP=$3
 TMPDIR=/tmp/KustROM
 
 ui_print() {
-  echo -e "ui_print $1" >> /proc/self/fd/$OUTFD
-  echo -e "ui_print" >> /proc/self/fd/$OUTFD
+  echo "ui_print $1" >> /proc/self/fd/$OUTFD
+  echo "ui_print" >> /proc/self/fd/$OUTFD
   sleep 0.35
 }
 
