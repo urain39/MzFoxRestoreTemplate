@@ -42,6 +42,19 @@ if is_mounted /cache; then
 	exec > /cache/kustom.log 2> /cache/kustom.err
 fi
 
+if [ ! -d /dev/block/bootdevice ]; then
+	BOOTDEVICEDIR=$(
+		find /dev/block/platform -name userdata -type l \
+		| head -n1 | awk -F'/' '{
+			l = NF - 2
+			for (i = 1; i < l; i++)
+				printf("%s/", $i)
+			printf("%s", $l)
+		}'
+	)
+	ln -sv $BOOTDEVICEDIR /dev/block/bootdevice
+fi
+
 
 ui_print "*************************"
 ui_print "*   KustROM Installer"
@@ -92,7 +105,7 @@ if ! is_mounted /custom; then
 	if ! is_directory /custom; then
 		mkdir -p /custom
 	fi
-	mount /dev/block/bootdevice/by-name/custom /custom	
+	mount /dev/block/bootdevice/by-name/custom /custom
 fi
 rm -rf /custom/3rd-party/apk/*
 ui_print "- Done."
