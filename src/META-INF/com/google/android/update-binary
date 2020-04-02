@@ -14,6 +14,10 @@ ui_print() {
 	sleep 0.35
 }
 
+is_file() {
+	[ -f $1 ]
+}
+
 is_directory() {
 	[ -d $1 ]
 }
@@ -38,7 +42,7 @@ is_mounted() {
 	' /proc/$$/mounts
 }
 
-if is_mounted /cache; then
+if is_mounted /cache && ! is_file /dev/.app_process_flashfire; then
 	exec > /cache/kustom.log 2> /cache/kustom.err
 fi
 
@@ -108,6 +112,7 @@ if ! is_mounted /custom; then
 	mount /dev/block/bootdevice/by-name/custom /custom
 fi
 rm -rf /custom/3rd-party/apk/*
+rm -rf /custom/3rd-party/apk2/*
 ui_print "- Done."
 
 
