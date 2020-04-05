@@ -1,4 +1,4 @@
-9928ab258452f204df3e8b78d6af3b39  ./META-INF/com/google/android/update-binary
+b2820fcb39ef263fc7ae184aec9a6922  ./META-INF/com/google/android/update-binary
 725f96cd0e49132223ae8e42bdba7456  ./META-INF/com/google/android/updater-script
 d41d8cd98f00b204e9800998ecf8427e  ./boot.img
 2ec1be4c69bdfee4292fdd27bbf6312b  ./md5sums.sh
