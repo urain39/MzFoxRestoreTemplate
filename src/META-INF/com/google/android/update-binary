@@ -73,7 +73,7 @@ ui_print "- Done."
 
 
 ui_print "- Extracting backup files..."
-mkdir -p $TMPDIR && cd $TMPDIR && unzip $ZIP || exit 22
+rm -rf $TMPDIR && mkdir -p $TMPDIR && cd $TMPDIR && unzip $ZIP || exit 22
 ui_print "- Done."
 
 
