@@ -1,5 +1,6 @@
-f1844a66333501a4cce50bfc124f4116  ./META-INF/com/google/android/update-binary
+b4666fddd8388369c659e823ff1208f4  ./META-INF/com/google/android/update-binary
 725f96cd0e49132223ae8e42bdba7456  ./META-INF/com/google/android/updater-script
 d41d8cd98f00b204e9800998ecf8427e  ./boot.img
 2ec1be4c69bdfee4292fdd27bbf6312b  ./md5sums.sh
 d41d8cd98f00b204e9800998ecf8427e  ./system.tar.bz2
+bf9d3c08fdd8fbae35643204ca05ba70  ./launcher.flyme8.xml

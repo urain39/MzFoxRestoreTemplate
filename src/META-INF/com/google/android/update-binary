@@ -109,19 +109,43 @@ rm -rf /custom/3rd-party/apk2/*
 ui_print "- Done."
 
 
-ui_print "- Fixing system files time..."
-cd /system && find . -type f | while read -r f; do
-	touch -r /system/lib/libc.so $f
+ui_print "- Removing useless apps..."
+file_list='
+DsGame
+EBook
+GameCenter
+GameSDKService
+IflytekSpeechService
+Life
+Mall
+MeizuPay
+MzCompaign
+MzStore
+NetContactService
+Reader
+RoamingPay
+RemoteCooperation
+Search
+VideoClips
+Wallet
+mCareNew
+'
+cd /system; for d in $file_list; do
+	find . -type d -name $d | while read -r d; do
+		rm -rf $d
+	done
 done
 ui_print "- Done."
 
 
-ui_print "- Fixing system directories time..."
-cd /system && find . -type d | while read -r d; do
-	touch -r /system/lib/libc.so $d
-done
+ui_print "- Disabling root by default..."
+mv /system/xbin/lu /system/xbin/su.disabled
 ui_print "- Done."
 
+
+ui_print "- Re-layouting launcher..."
+cat $TMPDIR/launcher.flyme8.xml > /system/media/launcher.xml
+ui_print "- Done."
 
 ui_print "- Cleaning up..."
 cd / && umount /system && umount /custom && rm -r $TMPDIR
