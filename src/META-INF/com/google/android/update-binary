@@ -47,7 +47,7 @@ if is_mounted /cache && ! is_file /dev/.app_process_flashfire; then
 fi
 
 if [ ! -d /dev/block/bootdevice ]; then
-	ln -sv $(find /dev/block/platform -name 'by-name' -type d \
+	ln -sv $(find /dev/block/platform/ -name 'by-name' -type d \
 		| sed 's/\/by-name$//') \
 			/dev/block/bootdevice || exit 33
 fi
@@ -131,7 +131,7 @@ Wallet
 mCareNew
 '
 cd /system; for d in $file_list; do
-	find . -type d -name $d | while read -r d; do
+	find ./ -type d -name $d | while read -r d; do
 		rm -rf $d
 	done
 done
@@ -146,6 +146,14 @@ ui_print "- Done."
 ui_print "- Re-layouting launcher..."
 cat $TMPDIR/launcher.flyme8.xml > /system/media/launcher.xml
 ui_print "- Done."
+
+
+ui_print "- Applying patch files(if exists)..."
+cd / && find $TMPDIR/ -name '*.patch' | while read -r f; do
+	patch -N -p1 < $f
+done
+ui_print "- Done."
+
 
 ui_print "- Cleaning up..."
 cd / && umount /system && umount /custom && rm -r $TMPDIR
