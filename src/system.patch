@@ -1,0 +1,29 @@
+diff -ruN old/system/build.prop new/system/build.prop
+--- old/system/build.prop	2020-07-16 15:02:07.022999867 +0800
++++ new/system/build.prop	2020-07-16 15:01:22.992999884 +0800
+@@ -45,7 +45,7 @@
+ ro.build.characteristics=default
+ ro.product.brand=Meizu
+ ro.product.manufacturer=Meizu
+-ro.build.display.id=Flyme 8.0.5.0A
++ro.build.display.id=Flyme 8.0.5.0A(urain39 edition)
+ ro.product.model=M6 Note
+ ro.meizu.product.model=M6Note
+ ro.product.name=meizu_M6Note_CN
+diff -ruN old/system/etc/init.qcom.post_boot.sh new/system/etc/init.qcom.post_boot.sh
+--- old/system/etc/init.qcom.post_boot.sh	2020-07-16 15:00:17.242999909 +0800
++++ new/system/etc/init.qcom.post_boot.sh	2020-07-16 15:04:17.662999817 +0800
+@@ -100,11 +100,10 @@
+     echo $clearPercent > /sys/module/zcache/parameters/clear_percent
+     echo 30 >  /sys/module/zcache/parameters/max_pool_percent
+ 
+-    # Zram disk - 512MB size
++    # Zram disk - 768MB size
+     zram_enable=`getprop ro.config.zram`
+     if [ "$zram_enable" == "true" ]; then
+-        #echo 536870912 > /sys/block/zram0/disksize
+-        echo 1G > /sys/block/zram0/disksize
++        echo 805306368 > /sys/block/zram0/disksize
+         mkswap /dev/block/zram0
+         swapon /dev/block/zram0 -p 32758
+     fi
